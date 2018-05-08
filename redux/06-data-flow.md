@@ -15,6 +15,7 @@
     - 그 결과들을 하나로 합쳐서 하나의 상태 트리를 만듬
 4. Redux 스토어가 루트 리듀서에 의해 반환된 상태 트리를 저장
     - store.subscribe(listener)를 통해 등록된 모든 리스너가 호출됨
+      - 모든 listener를 호출하는 것이 부담된다면 [reselect](https://github.com/rackt/reselect) 모듈을 이용 하여 분기 할 수 있음
     - 호출 받은 컴포넌트들은 store.getState()를 호출
     - 새로운 상태를 반영해 UI가 다시 그려짐
 
