@@ -362,8 +362,13 @@ export function fetchPostsIfNeeded(reddit) {
 }
 ```
 index.js
-```
+```javascript
 store.dispatch(fetchPostsIfNeeded('reactjs')).then(() =>
   console.log(store.getState());
 );
 ```
+- Redux 비동기 액션을 통제하는 방법
+  - 썽크 미들웨어
+  - redux-promise: 함수 대신 promise를 보냄
+  - redux-promise-middleware
+  - redux-rx: 옵서버를 보냄
