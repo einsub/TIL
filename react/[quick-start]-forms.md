@@ -1,5 +1,5 @@
 # 폼(Forms)
-*HTML 폼 엘리먼트는 React의 다른 DOM 엘리먼트들과는 살짝 다르게 동작합니다. 폼 엘리먼트는 몇개의 기본 state를 가지고 있기 때문입니다. 예를 들어, 아래 plain HTML의 폼은 하나의 name을 전달받습니다:
+*HTML 폼 엘리먼트는 React의 다른 DOM 엘리먼트들과는 살짝 다르게 동작합니다. 폼 엘리먼트는 몇개의 기본 state를 가지고 있기 때문입니다. 예를 들어, 아래 plain HTML의 폼은 하나의 name을 전달받습니다:*
 ```html
 <form>
   <label>
