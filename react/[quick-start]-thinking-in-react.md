@@ -92,8 +92,8 @@ React에는 "model" 데이터의 두 가지 타입이 있습니다: props와 sta
 
 ## 4단계: state가 어디에 있어야 하는가
 
-<iframe height='265' scrolling='no' title='Thinking In React: Step 4' src='//codepen.io/gaearon/embed/qPrNQZ/?height=265&theme-id=0&default-tab=js,result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/gaearon/pen/qPrNQZ/'>Thinking In React: Step 4</a> by Dan Abramov (<a href='https://codepen.io/gaearon'>@gaearon</a>) on <a href='https://codepen.io'>CodePen</a>.
-</iframe>
+<p data-height="265" data-theme-id="0" data-slug-hash="qPrNQZ" data-default-tab="js,result" data-user="gaearon" data-embed-version="2" data-pen-title="Thinking In React: Step 4" class="codepen">See the Pen <a href="https://codepen.io/gaearon/pen/qPrNQZ/">Thinking In React: Step 4</a> by Dan Abramov (<a href="https://codepen.io/gaearon">@gaearon</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 좋습니다. 이렇게 해서 앱이 가질 최소한의 state 집합을 구했습니다. 다음으로, 이 state를 변경하거나 소유하는 컴포넌트가 무엇인지 구별해내야 합니다.
 
@@ -114,3 +114,5 @@ React에는 "model" 데이터의 두 가지 타입이 있습니다: props와 sta
 
 애플리케이션이 어떻게 동작하는지 살펴볼 수 있습니다: `filterText`를 "ball"로 설정하고 앱을 새로 고침하세요. 데이터 테이블이 올바르게 업데이트 되는 것을 볼 수 있습니다.
 
+<p data-height="265" data-theme-id="0" data-slug-hash="LzWZvb" data-default-tab="js,result" data-user="gaearon" data-embed-version="2" data-pen-title="Thinking In React: Step 5" class="codepen">See the Pen <a href="https://codepen.io/gaearon/pen/LzWZvb/">Thinking In React: Step 5</a> by Dan Abramov (<a href="https://codepen.io/gaearon">@gaearon</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
