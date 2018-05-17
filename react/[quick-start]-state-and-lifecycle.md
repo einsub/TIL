@@ -4,7 +4,7 @@
 지금까지 UI를 업데이트하는 한가지 방법을 배웠습니다.
 
 `ReactDOM.render()`는 출력 된 결과를 변경합니다.
-```javascript
+```jsx
 function tick() {
   const element = (
     <div>
