@@ -114,5 +114,21 @@ React에는 "model" 데이터의 두 가지 타입이 있습니다: props와 sta
 
 애플리케이션이 어떻게 동작하는지 살펴볼 수 있습니다: `filterText`를 "ball"로 설정하고 앱을 새로 고침하세요. 데이터 테이블이 올바르게 업데이트 되는 것을 볼 수 있습니다.
 
+## 5단계: 역방향 데이터 플로우 추가
+
 <p data-height="265" data-theme-id="0" data-slug-hash="LzWZvb" data-default-tab="js,result" data-user="gaearon" data-embed-version="2" data-pen-title="Thinking In React: Step 5" class="codepen">See the Pen <a href="https://codepen.io/gaearon/pen/LzWZvb/">Thinking In React: Step 5</a> by Dan Abramov (<a href="https://codepen.io/gaearon">@gaearon</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+지금까지 우리는 계층을 따라 아래로 흐르는 props와 state의 기능으로 올바르게 렌더링되는 앱을 만들었습니다. 이제는 다른 방향으로 흐르는 데이터도 지원해야 합니다. 계층 구조 깊숙히 존재하는 폼 컴포넌트는 `FilterableProductTable` 컴포넌트에서 state를 업데이트해야 합니다.
+
+React를 사용하면 프로그램이 동작하는 방식을 이해하기 쉽도록 데이터 플로우를 명확하게 만들어줍니다. 하지만, 이 방식은 기존의 양방향 데이터 바인딩에 비해 더 많은 코드 타이밍이 필요합니다.
+
+예제의 현재 버전에서 입력창에 타이핑을 하거나 체크박스에 체크를 하면, React가 입력을 무시하는 것을 볼 수 있습니다. 이것은 의도된 것으로서, 입력창의 값 prop을 `FilterableProductTable`이 내려주는 state와 항상 똑같도록 설정했기 때문입니다.
+
+우리가 원하는 것을 생각해봅시다. 사용자가 폼을 변경 할 때 마다 사용자의 입력을 반영하도록 state를 업데이트해야 합니다. 컴포넌트는 자신의 state만 업데이트 해야 하므로, `FilterableProductTable`은 `SearchBar`에 콜백을 내려주고, `SearchBar`는 입력이 들어올 때 `onChange` 이벤트를 받아 그 콜백을 호출합니다. `FilaterableProductTable`이 전달한 콜백은 `setState()`를 호출하고 마침내 앱은 업데이트 됩니다.
+
+이 작업은 복잡해 보이지만 실제로는 몇 줄 안되는 코드입니다. 또한 앱 전체에서 데이터가 어떻게 흐르고 있는지 분명해집니다.
+
+## 이게 다입니다
+
+React를 사용해서 컴포넌트와 애플리케이션을 작성하는 것에 대해 이해가 되셨기를 바랍니다. 평소보다 타이핑을 조금 더 많이 해야겠지만, 코드는 쓰여진 것보다 훨씬 더 많이 읽히고, 모듈화되고 명시적인 이 코드들은 읽기가 매우 쉽다는 것을 기억하세요. 커다란 컴포넌트 라이브러리를 만들기 시작할 때면, 아마도 당신은 이 명시성과 모듈성에 고마워하고, 코드를 재사용하면서, 여러분의 코드가 점점 짧아질 것입니다. :)
