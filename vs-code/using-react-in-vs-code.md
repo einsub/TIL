@@ -109,13 +109,13 @@ registerServiceWorker()
 
 **Debugger for Chrome**의 **설치** 버튼을 누르세요. 이 버튼이 **설치중**으로 바뀌고, 설치가 완료되면 **다시 로드**로 바뀝니다. **다시 로드**를 누르면 VS Code가 재시작되고 확장이 활성화됩니다.
 
-## 브레이크포인트 설정하기
+### 브레이크포인트 설정하기
 
 `index.js`에 브레이크포인트를 설정하려면, 줄번호 왼쪽의 빈 공간을 클릭하면 됩니다. 이렇게 하면 브레이크포인트가 설정되며 빨간 원 모양이 보일 것입니다.
 
 ![Set a breakpoint](https://code.visualstudio.com/assets/docs/nodejs/reactjs/breakpoint.png)
 
-## 크롬 디버거 설정하기
+### 크롬 디버거 설정하기
 
 [디버거](https://code.visualstudio.com/docs/editor/debugging)에 초기 설정을 합니다. 디버거 뷰(⇧⌘D)로 가서 디버거 설정 파일인 `launch.json`을 생성하기 위해 톱니 버튼을 클릭합니다. **Select Environment** 드롭다운 목록에서 **Chrome**을 선택합니다. 이렇게 하면 웹사이트를 실행 할 설정이 포함된 프로젝트 폴더에 `.vscode` 폴더를 만들고 그 안에 `launch.json` 파일을 생성합니다.
 
@@ -147,3 +147,107 @@ registerServiceWorker()
 **Debugger for Chrome** 확장의 README에는 소스맵으로 작업하기나 문제 해결 등 다른 설정에 대한 많은 내용을 확인할 수 있습니다. 해당 확장 페이지에서 **세부 정보** 탭을 눌러서 VS Code 내에서 직접 읽어볼 수도 있습니다.
 
 ![chrome debugger configuration 3](https://code.visualstudio.com/assets/docs/nodejs/reactjs/chrome-debugger-readme.png)
+
+### 라이브 수정과 디버깅
+
+React 앱과 함께 [webpack](https://webpack.js.org/)을 사용중이라면, webpack의 HMR 메커니즘의 장점을 이용해 훨씬 효율적인 워크플로우를 경험 할 수 있습니다. 이 메커니즘은 라이브 수정과 VS Code에서 직접 디버깅을 하는 것을 가능하게 해줍니다. 더 자세한 내용은 [라이브 수정과 VS Code에서 React 앱을 직접 디버그하기](https://medium.com/@auchenberg/live-edit-and-debug-your-react-apps-directly-from-vs-code-without-leaving-the-editor-3da489ed905f) 블로그 포스트를 참고하세요.
+
+## Linting
+
+Linter는 소스 코드를 분석하여 애플리케이션이 실행되기 전에 잠재적인 문제들을 경고해줍니다. VS Code에 포함되어 있는 자바스크립트 언어 서비스에는 기본적으로 구문 오류를 확인하는 기능을 지원하고, 이는 **문제**패널 (**보기 > 문제** ⇧⌘M)에서 실제로 동작하는 것을 볼 수 있습니다.
+
+React 소스 코드에 살짝 오류를 만들어 보면, 빨간 표식이 생기고 **문제** 패널에 에러가 표시됩니다.
+
+![Linting 1](https://code.visualstudio.com/assets/docs/nodejs/reactjs/js-error.png)
+
+Linter는 정교한 분석, 코딩 규칙의 적용, 안티 패턴 탐지 등의 기능을 제공합니다. 유명한 자바스크립트 linter는 ESLint 입니다. ESLint가 ESLint VS Code 확장과 결합하면 훌륭한 Lint 경험을 제공 할 것입니다.
+
+먼저 ESLint 명령행 도구를 설치합니다.
+
+```sh
+npm install -g eslint
+```
+
+그리고 확장 뷰로 이동 후, 'eslint'를 입력해서 ESLint 확장을 설치합니다.
+
+![Linting 2](https://code.visualstudio.com/assets/docs/nodejs/reactjs/eslint-extension.png)
+
+ESLint 확장이 설치되고 VS Code가 재시작되면, ESLint 설정 파일인 `.eslintrc.json 파일을 만듭니다. 명령 팔레트(Command Palette)(⇧⌘P)에서 **ESLint: Create '.eslintrc.json' File** 명령을 이용해서 생성할 수 있습니다.
+
+![Linting 3](https://code.visualstudio.com/assets/docs/nodejs/reactjs/create-eslintrc.png)
+
+이 명령은 프로젝트 루트 폴더에 `.eslintrc.json` 파일을 생성합니다.
+
+```json
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-const-assign": "warn",
+        "no-this-before-super": "warn",
+        "no-undef": "warn",
+        "no-unreachable": "warn",
+        "no-unused-vars": "warn",
+        "constructor-super": "warn",
+        "valid-typeof": "warn"
+    }
+}
+```
+
+ESLint는 열려 있는 파일들을 분석하고 `index.js`에 'App'이 정의 되었으나 한번도 사용되지 않았다는 경고를 보여줍니다.
+
+![Linting 4](https://code.visualstudio.com/assets/docs/nodejs/reactjs/app-is-unused.png)
+
+ESLint의 [규칙]()을 수정 할 수 있습니다. ESLint 확장도 `.eslintrc.json`에서 InteliSense를 제공합니다.
+
+![Linting 5](https://code.visualstudio.com/assets/docs/nodejs/reactjs/eslintrc-intellisense.png)
+
+추가 세미콜론에 대한 에러 규칙을 추가해봅시다:
+
+```json
+"rules": {
+    "no-const-assign": "warn",
+    "no-this-before-super": "warn",
+    "no-undef": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "constructor-super": "warn",
+    "valid-typeof": "warn",
+    "no-extra-semi":"error"
+}
+```
+
+이제 실수로 한 라인에 여러 세미콜론을 입력하면, 에디터에 에러(빨간 표식)가 보여지고, **문제** 패널에 에러 항목이 나타납니다.
+
+![Linting 6](https://code.visualstudio.com/assets/docs/nodejs/reactjs/extra-semi-error.png)
+
+## 유명한 스타터 키트(Starter kits)
+
+이 튜토리얼에서는 `create-react-app` generator를 사용하여 간단한 React 애플리케이션을 작성하였습니다. 첫 번째  React 애플리케이션을 만드는데 도움이 되는 훌륭한 샘플이나 스타터 키트들이 많이 있습니다.
+
+### VS Code React 샘플
+올해 //Build 컨퍼런스에서 [데모](https://channel9.msdn.com/events/Build/2017/T6078)로 사용하기 위해 만들어진 [샘플](https://github.com/Microsoft/vscode-react-sample) React 애플리케이션입니다. 이 샘플은 간단한 TODO 애플리케이션을 만들고, Node.js [Express](https://expressjs.com/) 서버의 소스 코드도 포함합니다. 또한 [Babel](https://babeljs.io/) ES6 transpiler를 사용하고 [webpack](https://webpack.js.org/)을 이용해 사이트의 자원을 묶는 방법을 보여줍니다.
+
+### MERN Stater
+완전한 MERN (MongoDB, Express, React, Node.js) 스택 예제를 보려면 [MERN Starter](http://mern.io/)를 보세요. [MongoDB](https://docs.mongodb.com/v3.0/installation/)를 설치하고 실행해야 하지만, 빠르게 MERN 애플리케이션을 실행시킬 수 있습니다. Node.js 서버 디버깅을 설정하는 상세한 내용 등, 유용한 VS Code 특화 문서들이 [vscode-recipes](https://github.com/Microsoft/vscode-recipes/tree/master/MERN-Starter)에 있습니다.
+
+### TypeScript React
+TypeScript와 React에 대해 궁금하다면 TypeScript 버전의 `create-react-app` 애플리케이션을 만들어 볼 수 있습니다. 자세한 내용은 [TypeScript Quick Start](https://www.typescriptlang.org/samples/index.html) 사이트인 [TypeScript-React-Starter](https://github.com/Microsoft/TypeScript-React-Starter)를 참고하세요.
+
+### Angular
+[Angular](https://angular.io/)는 또 다른 인기있는 웹 프레임워크입니다. VS Code로 Angular 작업을 하는 예제를 보려면 [Chrome Debugging with Angular CLI](https://github.com/Microsoft/vscode-recipes/tree/master/Angular-CLI) recipe를 확인하세요. Angular 애플리케이션을 만들고 [Debugging for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)의 `launch.json` 파일을 구성하는 과정을 설명합니다.
+
+## 일반적인 질문들
+
+**Q: 선언적(declarative) JSX에도 IntelliSense를 쓸 수 있나요?**
+**A**: 네, 예를 들어 `create-react-app` 프로젝트의 `App.js` 파일을 띄우면, `render()` 메소드 안의 React JSX에 IntelliSense가 사용되는 것을 볼 수 있습니다.
