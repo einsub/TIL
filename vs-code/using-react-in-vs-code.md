@@ -107,7 +107,43 @@ registerServiceWorker()
 
 ![Debugging React](https://code.visualstudio.com/assets/docs/nodejs/reactjs/debugger-for-chrome.png)
 
-**Debugger for Chrome**의 **설치** 버튼을 누르세요. 이 버튼이 **설치중**으로 바뀌고, 설치가 완료되면 **다시 로드*로 바뀝니다. **다시 로드**를 누르면 VS Code가 재시작되고 확장이 활성화됩니다.
+**Debugger for Chrome**의 **설치** 버튼을 누르세요. 이 버튼이 **설치중**으로 바뀌고, 설치가 완료되면 **다시 로드**로 바뀝니다. **다시 로드**를 누르면 VS Code가 재시작되고 확장이 활성화됩니다.
 
 ## 브레이크포인트 설정하기
 
+`index.js`에 브레이크포인트를 설정하려면, 줄번호 왼쪽의 빈 공간을 클릭하면 됩니다. 이렇게 하면 브레이크포인트가 설정되며 빨간 원 모양이 보일 것입니다.
+
+![Set a breakpoint](https://code.visualstudio.com/assets/docs/nodejs/reactjs/breakpoint.png)
+
+## 크롬 디버거 설정하기
+
+[디버거](https://code.visualstudio.com/docs/editor/debugging)에 초기 설정을 합니다. 디버거 뷰(⇧⌘D)로 가서 디버거 설정 파일인 `launch.json`을 생성하기 위해 톱니 버튼을 클릭합니다. **Select Environment** 드롭다운 목록에서 **Chrome**을 선택합니다. 이렇게 하면 웹사이트를 실행 할 설정이 포함된 프로젝트 폴더에 `.vscode` 폴더를 만들고 그 안에 `launch.json` 파일을 생성합니다.
+
+예제를 위해 한가지 변경이 필요합니다: `url` port를 `8080`에서 `3000`으로 바꿔줍니다. `launch.json`은 이렇게 생겼습니다:
+
+```json
+{
+  "version": "0.2.0",
+  "configuration": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
+```
+
+개발 서버가 실행 중인지("npm start") 확인하세요. 그리고 나서 F5키나 녹색 화살표를 눌러서 디버거를 띄우고 웹 브라우저를 엽니다. 브레이크포인트가 설정된 소스 코드는 디버거가 붙기 전인 구동중에 이미 실행되었기 때문에, 페이지를 다시 리프레시 하지 않는 한 브레이크포인트에 걸리는 일은 없을 겁니다. 페이지를 리프레시 시키면 이제는 브레이크포인트에 걸려야 합니다.
+
+![chrome debugger configuration 1](https://code.visualstudio.com/assets/docs/nodejs/reactjs/hit-breakpoint.png)
+
+소스 코드를 따라 단계별로 진행(F10) 할 수 있고, `element`와 같은 변수 값을 알아 낼 수도 있으며, 클라이언트 쪽 Ract 애플리케이션의 콜 스택도 확인이 가능합니다.
+
+![chrome debugger configuration 2](https://code.visualstudio.com/assets/docs/nodejs/reactjs/debug-variable.png)
+
+**Debugger for Chrome** 확장의 README에는 소스맵으로 작업하기나 문제 해결 등 다른 설정에 대한 많은 내용을 확인할 수 있습니다. 해당 확장 페이지에서 **세부 정보** 탭을 눌러서 VS Code 내에서 직접 읽어볼 수도 있습니다.
+
+![chrome debugger configuration 3](https://code.visualstudio.com/assets/docs/nodejs/reactjs/chrome-debugger-readme.png)
