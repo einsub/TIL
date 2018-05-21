@@ -255,3 +255,192 @@ class App = () => {
 위 예제에서, `kind` prop은 안전하게 사용되었고, DOM의 `<button>` 엘리먼트로 전달되지 않았습니다. 다른 모든 prop들은 `...other` 오브젝트를 통해 전달되었으며 이 방법은 컴포넌트를 정말 유연하게 만듭니다. `onClick`과 `children` props가 전달 된 것을 볼 수 있습니다.
 
 Spread 속성은 유용합니다만 컴포넌트로 쓸모 없는 prop들을 넘기기 쉬워집니다. 컴포넌트는 이를 무시 하거나 유효하지 않은 HTML 속성을 DOM으로 전달 합니다. 꼭 필요 할 때만 사용하는 것을 권장합니다.
+
+## JSX의 자식들(chidren)
+
+여는 태그와 닫는 태그 모두를 가진 JSX 표현식에서 두 태그 사이의 내용은 특별한 prop으로 전달됩니다: `props.children'. 자식을 전달하는 방법은 여러가지가 있습니다:
+
+### 문자열
+
+여는 태그와 닫는 태그 사이에 문자열을 넣으면, `props.children`은 그 문자열이 됩니다. 이 방법은 많은 빌트인(built-in) 엘리먼트에 유용합니다. 예를 들면:
+
+```jsx
+<MyComponent>Hello world!</MyComponent>
+```
+
+위는 무제 없는 JSX이며, `MyComponent`의 `props.children`은 `"Hello world!"` 문자열이 됩니다. HTML은 escape 되지 않았기 때문에 HTML을 작성 할 때 처럼 JSX를 작성하면 됩니다.
+
+```jsx
+<div>This is valid HTML &amp; JSX at the same time.</div>
+```
+
+JSX는 라인의 시작과 끝의 공백, 빈 라인을 제거합니다. 태그들 사이의 새 라인은 제거됩니다; 문자열 중간의 새 라인은 한 칸 공백으로 압축됩니다. 그러므로 다음 모두는 똑같이 렌더링됩니다:
+
+```jsx
+<div>Hello World</div>
+
+<div>
+  Hello World
+</div>
+
+<div>
+  Hello
+  World
+</div>
+
+<div>
+
+  Hello World
+</div>
+```
+
+### JSX 자식
+
+다른 JSX 엘리먼트들도 자식으로 제공 할 수 있습니다. 이는 중첩된 컴포넌트들을 표시하는데 유용합니다:
+
+```jsx
+<MyComponent>
+  <MyFirstComponent />
+  <MySecondComponent />
+</MyComponent>
+```
+
+다른 종류의 자식들을 함께 섞을 수 있습니다. 이렇게 하면 JSX 자식들과 문자열을 함께 사용 할 수 있습니다. 이는 JSX가 HTML과 비슷한 또 다른 점입니다. 아래는 JSX와 HTML 모두에게 유효합니다:
+
+```jsx
+<div>
+  Here is a list:
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>
+</div>
+```
+
+React 컴포넌트는 엘리먼트 배열을 반환 할 수 있습니다:
+
+```jsx
+render() {
+  // 추가 엘리먼트안의 리스트 아이템들을 감쌀 필요가 없습니다!
+  return [
+    // key를 잊지 마세요 :)
+    <li key="A">First item</li>,
+    <li key="B">Second item</li>,
+    <li key="C">Thir item</li>,
+  ]
+}
+```
+
+### 자식으로 자바스크립트 표현식 넘기기
+
+`{}`를 둘러싸서 자바스크립트 표현식을 자식으로 넘길 수 있습니다. 예를 들어, 다음 표현식들은 동일합니다:
+
+```jsx
+<MyComponent>foo</MyComponent>
+
+<MyComponent>{'foo'}</MyComponent>
+```
+
+이런 방법은 임의 길이의 JSX 표현식 목록을 렌더링할 때 특히 유용합니다. 예를 들어, 다음은 HTML 목록을 렌더링합니다:
+
+```jsx
+function Item(props) {
+  return <li>{props.message}</li>
+}
+
+function TodoList() {
+  const todos = ['finish doc', 'submit pr', 'nag dan to review']
+  return (
+    <ul>
+      {todos.map((message) => <Item key={message} message={message})}
+    </ul>
+  )
+}
+
+자바스크립트 표현식은 다른 타입의 자식들과 함께 사용 할 수 있습니다. 이는 종종 문자열 템플릿 대신 사용합니다.
+
+```jsx
+function Hello(props) {
+  return <div>Hello {props.addressee}!</div>
+}
+```
+
+### 자식으로 함수 넘기기
+
+보통 자바스크립트 표현식은 JSX에 문자열이나 React 엘리먼트, 이것들의 리스트로 평가되어 추가됩니다. 그러나 `props.children`은 React가 렌더링하는 방법을 아는 것뿐만 아니라 모든 종류의 데이터를 전달 할 수 있다는 점에서 다른 props와 마찬가지로 동작합니다. 예를 들어, 커스텀 컴포넌트를 가지고 있다면, 콜백을 `props.children`으로 가질 수 있습니다:
+
+```jsx
+// 반복되는 컴포넌트를 만들어내기 위해 numTomes 자식 콜백을 호출합니다.
+function Repeat(props) {
+  let items = []
+  for (let i = 0; i < props.numTimes; i++) {
+    items.push(props.children(i))
+  }
+  return <div>{items}</div>
+}
+
+function ListOfTenThings() {
+  return (
+    <Repeat numTimes={10}>
+      {(index) => <div key={index}>This is item {index} in the list</div>}
+    </Repeat>
+  )
+}
+```
+
+커스텀 컴포넌트로 보내는 자식은 컴포넌트가 렌더링 전에 인식 할 수 있는 무언가로 변환이 된다면, 무엇이든 될 수 있습니다. 이는 흔한 것은 아니지만, JSX의 능력을 최대한 이용한다면 잘 작동합니다.
+
+### Boolean, Null, Undefined는 무시됩니다.
+
+`false`, `null`, `undefined`, `true`는 모두 유효한 자식들입니다. 이것들은 렌더링되지 않습니다. 이 JSX 표현식들은 동일하게 렌더링됩니다:
+
+```jsx
+<div />
+
+<div></div>
+
+<div>{false}</div>
+
+<div>{null}</div>
+
+<div>{undefined}</div>
+
+<div>{true}</div>
+```
+
+React 엘리먼트를 조건부로 렌더링하고자 할 때 유용합니다. 이 JSX는 `showHeader`가 `true`일 때만 `<Header />`를 렌더링합니다.
+
+```jsx
+<div>
+  {showHeader && <Header />}
+  <Content />
+</div>
+```
+
+한 가지 주의 할 점은 어떤 ["falsy" 값](https://developer.mozilla.org/en-US/docs/Glossary/Falsy), 예를 들어 숫자 `0` 같은 것은 여전히 React가 렌더링을 한다는 점입니다. 예를 들어, 다음 코드는 여러분이 원하는대로 동작하지 않고, `props.messages`가 빈 배열일 때 `0`을 출력하게 됩니다.
+
+```jsx
+<div>
+  {props.messages.length &&
+    <MesasgeList message={props.messages} />
+  }
+</div>
+```
+
+이걸 수정하기 위해서는 `&&` 앞의 표현식이 항상 boolean이 되도록 하세요:
+
+```jsx
+<div>
+  {props.messages.length > 0 &&
+    <MessageList message={props.messages} />
+  }
+</div>
+```
+
+대조적으로, `false, `true`, `null`, `undefined` 같은 값들이 결과로 보여지게 하려면 [문자열 변환](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#String_conversion)을 먼저 해야 합니다:
+
+```jsx
+<div>
+  My Javascript variable is {String(myVariable)}
+</div>
+```
