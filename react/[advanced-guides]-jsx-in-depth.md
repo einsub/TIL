@@ -1,6 +1,6 @@
 # JSX 깊이 파보기
 
-*기본적으로, JSX는 `React.createElement(component, props, ...children)` 함수에 대한 구문적인 달콤함을 주는 것 뿐입니다. JSX 코드:
+*기본적으로, JSX는 `React.createElement(component, props, ...children)` 함수에 대해 구문적인 달콤함을  제공하는 것 뿐입니다. JSX 코드:*
 
 ```jsx
 <MyButton color="blue" shadowSize={2}>
@@ -62,7 +62,7 @@ function WarningButton() {
 
 ### JSX 타입에 dot 표기법 사용하기
 
-여러분은 JSX에서 dot-표기법으로 React 컴포넌트를 참조 할 수 있습니다. 이 방법은 하나의 모듈로부터 여러 React 컴포넌트를 불러올 때 편리합니다. 예를 들어, `MyComponents.DatePicker`가 텀포넌트라면 JSX 내부에서 직접 이용 할 수 있습니다:
+JSX에서 dot 표기법으로 React 컴포넌트를 참조 할 수 있습니다. 이 방법은 하나의 모듈로부터 여러 React 컴포넌트를 불러올 때 편리합니다. 예를 들어, `MyComponents.DatePicker`가 컴포넌트라면 JSX 내부에서 직접 이용 할 수 있습니다:
 
 ```jsx
 import React from 'react'
@@ -183,7 +183,7 @@ function NumberDescriber(props) {
 }
 ```
 
-이에 대해 [조건부 렌더링(conditional rendering)](https://reactjs.org/docs/conditional-rendering.html)과 [루프(loop)](https://reactjs.org/docs/lists-and-keys.html)에서 더 배워보실 수 있습니다.
+이에 대해 [조건부 렌더링(conditional rendering)]([quick-start]-conditional-rendering.md)과 [루프(loop)]([quick-start]-lists-and-keys.md)에서 더 배워보실 수 있습니다.
 
 ### 문자열
 
@@ -352,10 +352,11 @@ function TodoList() {
   const todos = ['finish doc', 'submit pr', 'nag dan to review']
   return (
     <ul>
-      {todos.map((message) => <Item key={message} message={message})}
+      {todos.map((message) => <Item key={message} message={message}>}
     </ul>
   )
 }
+```
 
 자바스크립트 표현식은 다른 타입의 자식들과 함께 사용 할 수 있습니다. 이는 종종 문자열 템플릿 대신 사용합니다.
 
@@ -367,10 +368,10 @@ function Hello(props) {
 
 ### 자식으로 함수 넘기기
 
-보통 자바스크립트 표현식은 JSX에 문자열이나 React 엘리먼트, 이것들의 리스트로 평가되어 추가됩니다. 그러나 `props.children`은 React가 렌더링하는 방법을 아는 것뿐만 아니라 모든 종류의 데이터를 전달 할 수 있다는 점에서 다른 props와 마찬가지로 동작합니다. 예를 들어, 커스텀 컴포넌트를 가지고 있다면, 콜백을 `props.children`으로 가질 수 있습니다:
+보통 자바스크립트 표현식은 문자열이나 React 엘리먼트, 혹은 이것들의 리스트로 평가되어 추가됩니다. 그러나 `props.children`은 React가 렌더링하는 방법을 아는 것뿐만 아니라 모든 종류의 데이터를 전달 할 수 있다는 점에서 다른 props와 마찬가지로 동작합니다. 예를 들어, 커스텀 컴포넌트를 가지고 있다면, 콜백을 `props.children`으로 가질 수 있습니다:
 
 ```jsx
-// 반복되는 컴포넌트를 만들어내기 위해 numTomes 자식 콜백을 호출합니다.
+// 반복되는 컴포넌트를 만들어내기 위해 numTimes 자식 콜백을 호출합니다.
 function Repeat(props) {
   let items = []
   for (let i = 0; i < props.numTimes; i++) {
