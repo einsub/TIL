@@ -215,7 +215,195 @@ HOC와 **컨테이너 컴포넌트**라 불리는 패턴간에 유사점을 발�
 
 ---
 
-## Convention: 래핑 된 컴포넌트를 통해 관련없는 props 넘기기
+## 규칙: 래핑 된 컴포넌트를 통해 관련없는 props 넘기기
 
 HOC는 컴포넌트에 기능을 추가합니다. 그들은 계약을 크게 변경해서는 안됩니다. HOC에서 반환 된 컴포넌트에는 래핑 된 컴포넌트와 비슷한 인터페이스가 있어야 합니다.
 
+HOC는 특정 관심사와 관련이 없는 props로 전달되어야 합니다. 대부분의 HOC는 다음과 같은 렌더링 메소드가 포함되어 있습니다:
+
+```jsx
+render() {
+  // 이 HOC에만 해당되고 통과해서는 안되는 추가 props를 걸러냅니다.
+  const { extraProp, ...passThroughProps } = this.props
+
+  // 래핑된 컴포넌트로 props를 주입합니다.
+  // 그것들은 보통 state 값이나 인스턴스 메소드입니다.
+  const injectedProp = someStateOrInstanceMethod
+
+  // 래핑된 컴포넌트로 props를 전달합니다.
+  return (
+    <WrappedComponent
+      injectedProp = {injectedProp}
+      {...passThroughProps}
+    />
+  )
+}
+```
+
+이 규칙은 HOC가 최대한 유연하고 재사용 가능하도록 해줍니다.
+
+## 규칙: 최대한 합성 가능하도록 하세요.
+
+모든 HOC가 똑같이 생긴 것은 아닙니다. 어떤건 하나의 인자를 받는데 그것은 바로 래핑된 컴포넌트입니다:
+
+```javascript
+const NavbarWithRouter = withRouter(NavBar)
+```
+
+보통 HOC는 추가 인자를 받습니다. Relay의 이 예제에서 config 오브젝트는 컴포넌트의 데이타 의존성을 정의하기 위해 사용되었습니다:
+
+```javascript
+const CommentWithRelay = Relay.createContaimer(Comment, config)
+```
+
+HOC의 가장 흔한 시그너쳐(signature)는 다음과 같습니다:
+
+```javascript
+// Relay Redux의 `connect`
+const ConnectedComment = connect(commentSelector, commentActions)(CommentList)
+```
+
+뭐라고요?! 이걸 분해해서 살펴보면 좀 더 쉽게 이해할 수 있습니다.
+
+```javascript
+// connect는 다른 함수를 반환하는 함수입니다.
+const enhance = connect(commentListSelector, commentListActions)
+// 반환된 함수는 HOC입니다. 이 함수는 Redux store에 연결된(connected) 컴포넌트를 반환합니다.
+const ConnectedComment = enhance(CommentList)
+```
+
+다른 말로, `connect`는 HOC를 반환하는 higher-order 함수입니다!
+
+이 형식은 혼란스럽고 불필요해보일 수 있습니다. 그러나 매우 쓰임새있습니다. `connect`가 반환한 것 같은 이 하나의 인자를 받는 HOC는 `Component => Component`의 시그너쳐를 가지고 있습니다. 입력 타입과 똑같은 출력 타입을 가진 함수는 다른 것들과 합성시키기 무척 쉽습니다.
+
+```javascript
+// 이렇게 하는 대신에...
+const EnhancedComponent = withRouter(connect(commentSelector)(WrappedComponent))
+
+// ... 함수 합성 유틸리티를 이용 할 수 있습니다.
+// compose(f, g, h)는 (...args) => f(g(h(...args))) 와 같습니다.
+const enhance = compose(
+  // 이 둘은 모두 단일 인자 HOC 입니다.
+  withRouter,
+  connect(commentSelector)
+)
+const EnhancedComponent = enhance(WrappedComponent)
+```
+
+(이 속성을 사용하면 `connect`와 기타 enhancer 스타일 HOC를 decorator로 사용 할 수 있습니다. 이것은 자바스크립트의 실험적 제안입니다)
+
+이 `compose` 유틸리티 함수는 lodash([lodash.flowRight](https://lodash.com/docs/#flowRight)으로), [Redux](http://redux.js.org/docs/api/compose.html), [Ramda]((http://ramdajs.com/docs/#compose)와 같은 많은 써드파티 라이브러리로부터 제공됩니다.
+
+## 규칙: 디버깅을 쉽게 하기 위해 보여주는 이름을 래핑하세요.
+
+HOC에 의해 만들어진 컨테이너 컴포넌트는 다른 컴포넌트와 마찬가지로 React Developer Tools에 표시됩니다. 디버깅을 쉽게 하려면 HOC 결과임을 전달하는 보여지는 이름을 선택합니다.
+
+가장 일반적인 방법은 래핑 된 컴포넌트의 보여지는 이름을 래핑하는 것입니다. 따라서 상위 컴포넌트의 이름이 `WithSubscription`이고 래핑된 컴포넌트의 이름이 `CommentList`인 경우, 보여지는 이름 `WithSubscription(CommentList)`를 사용하세요:
+
+```javascript
+function withSubscription(WrappedComponent) {
+  class WithSubscription extends React.Component {
+    /* ... */
+  }
+  WithSubscription.displayName = `WithSubscription(${getDisplayName(WrappedComponent)})`
+  return WithSubscription
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName ||
+    WrappedComponent.name ||
+    'Component'
+}
+```
+
+---
+
+## 주의 사항
+
+HOC는 React를 처음 사용하면 바로 명확하게 와닿지 않는 몇가지 주의 할 것들이 있습니다.
+
+## render 메소드안에서 HOC를 사용하지 마세요
+
+React의 diffing 알고리즘 (조정 (reconciliation) 이라고 함)은 컴포넌트 ID를 사용하여 기존 하위 트리를 업데이트해야 하는지 아니면 버리고 새 노드를 마운트해야 하는지를 결정합니다. `render`에서 반환된 컴포넌트가 이전 렌더링의 컴포넌트와 동일하면 (`===`) React가 새 트리와 비교하여 반복적으로 하위 트리를 업데이트합니다. 그것들이 동일하지 않다면 이전 서브 트리가 완전히 마운트 해제 됩니다.
+
+일반적으로 이것에 대해 생각할 필요가 없습니다. 그러나 컴포넌트의 렌더링 메소드 내에서 컴포넌트에 HOC를 적용 할 수 없기 때문에 이 부분을 유념할 필요가 있습니다.
+
+```jsx
+render() {
+  // EnhancedComponent의 새 버전이 매 render 마다 만들어집니다.
+  // EnhancedComponent1 !== EnhancedComponent2
+  const EnhancedComponent = enhance(MyComponent)
+  // 이것은 전체 하위 트리를 매번 언마운트/재마운트 시킵니다.
+  return <EnhancedComponent />
+}
+```
+
+여기서 문제는 성능에 관한 문제 뿐만이 아니라 컴포넌트를 다시 마운트하면 해당 컴포넌트의 상태와 모든 하위 항목들이 손실된다는 것입니다.
+
+대신 컴포넌트 정의의 외부에서 HOC를 적용하여 결과 컴포넌트가 한 번만 만들어지도록 하세요. 그러면 ID가 렌더링간에 일관성을 유지하게 됩니다. 이것이 우리가 원하는 것입니다.
+
+드물게 HOC를 동적으로 적용해야 하는 경우에는 컴포넌트의 라이프사이클 메소드 또는 해당 생성자 내에서 HOC를 수행할 수도 있습니다.
+
+## static 메소드를 복사해야 합니다.
+
+때로는 React 컴포넌트에 static 메소드를 정의하는 것이 유용합니다. 예를 들어, Relay 컨테이너는 static 메소드 getFragment를 노출하여 GraphQL fragment를 쉽게 해줍니다.
+
+그러나 컴포넌트에 HOC를 적용하면 원래 컴포넌트가 컨테이너 컴포넌트로 래핑됩니다. 즉, 새 컴포넌트에는 원래 컴포넌트의 static 메소드가 없습니다.
+
+```jsx
+// static 메소드를 정의합니다.
+WrappedComponent.staticMethod = function() {
+  /* ... */
+}
+// 이제 HOC를 적용합니다.
+const EnhancedComponent = enhance(WrappedComponent)
+
+// enhanced 컴포넌트는 static 메소드드를 가지고 있지 않습니다.
+typeof EnhancedComponent.staticMethod === 'undefined' // true
+```
+
+이 문제를 해결하려면, 반환 전에 컨테이너에 메소드를 복사해야 합니다.
+
+```jsx
+function enhance(WrappedComponent) {
+  class Enhance extends React.Component {
+    /* ... */
+  }
+  // 어떤 메소드가 복사되어야 하는지 확실하게 알고 있어야 합니다.
+  Enhance.staticMethod = WrappedComponent.staticMethod
+  return Enhance
+}
+```
+
+그러나, 이 것은 복사할 메소드를 확실하게 알고 있어야 한다는 문제가 있습니다. React의 것이 아닌 모든 static 메소드들을 자동으로 복사하는 [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics)를 사용 할 수 있습니다.
+
+```javascript
+import hoistNonReactStatic from 'hoist-non-react-statics'
+function enhance(WrappedComponent) {
+  class Enhance extends React.Component {
+    /* ... */
+  }
+  hoistNonReactStatic(Enhance, WrappedComponent)
+  return Enhance
+}
+```
+
+또 다른 해결책은 static 메소드를 컴포넌트 자체와는 별개로 export 하는 것입니다.
+
+```javascript
+// 이렇게 하는 대신...
+MyComponent.someFunction = someFunction
+export default MyComponent
+
+// ... 메소드를 따로 export 합니다.
+export { someFunction }
+
+// ... 그리고 소비하는 모듈안에서, 둘 모두를 import 합니다.
+imoprt MyComponent, { someFunction } from './MyComponent.js'
+```
+
+## Refs는 전달되지 않습니다.
+
+상위 컴포넌트에 대한 규칙은 래핑 된 컴포넌트로 모든 props를 전달하는 것이지만, refs는 그렇지 않습니다. 이것은 `ref`가 정말 props 같은 것이 아니고, `key`처럼 React에게 특별하게 다루어지기 때문입니다. 컴포넌트가 HOC의 결과인 엘리먼트에 대한 ref를 추가하면, ref는 래핑 된 컴포넌트가 아닌 가장 바깥쪽 컨테이너 컴포넌트의 인스턴스를 참조합니다.
+
+이 문제에 대한 해결책은 `React.forwardRef` API (React 16.3에서 소개)를 사용하는 것입니다. 자세한 사항은 [refs 전달하기]([advanced-guides]-forwarding-refs.md) 섹션을 참고하세요.
