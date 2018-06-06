@@ -13,6 +13,8 @@ React element는 DOM element와는 달리 보통의 object입니다. 그러므�
 > 참고:<br />
 사람들은 종종 element와 더 넓은 의미로 쓰이는 "component"를 헷갈려 합니다. [다음 섹션]([quick-start]-components-and-props.md)에서는 comopnent를 소개하겠습니다. component는 element들이 모여서 만들어집니다. 앞으로 건너뛰기 전에, 이 섹션을 계속 읽어주십시요.
 
+---
+
 ## element를 DOM에 렌더링하기
 
 HTML 파일 어딘가 `<div>`가 있다고 가정해봅시다.
@@ -35,6 +37,8 @@ ReactDOM.render(element, document.getElementById('root'))
 [CodePen에서 실행하기](https://reactjs.org/redirect-to-codepen/rendering-elements/render-an-element)
 
 페이지에 "Hello, world"가 표시 됩니다.
+
+---
 
 ## 렌더링 된 element를 업데이트하기
 
@@ -66,7 +70,9 @@ setInterval(tick, 1000)
 실전에서 대부분의 React 앱은 ReactDOM.render()를 단 한번만 호출합니다. 다음 섹션에서는 이런 코드들을 [상태를 가진(stateful) 컴포넌트]([quick-start]-state-and-lifecycle.md)로 캡슐화하는 방법을 배워 볼 것입니다.<p />
 이 주제들은 서로 관련이 있기 때문에 그냥 지나치지 말고 계속 읽어주셔야 합니다.
 
-## React는 필요한 것들만 업데이트한다.
+---
+
+## React는 필요한 것들만 업데이트한다
 
 React DOM은 element와 그 자식들의 현재와 이전 버전을 비교하여 필요한 변경 사항만 DOM에 적용합니다.
 
