@@ -11,7 +11,7 @@ const element = <h1>Hello, world</h1>
 React element는 DOM element와는 달리 보통의 object입니다. 그러므로 생성하는 데 들어가는 비용이 저렴합니다. React DOM은 DOM을 업데이트하여 React element와 일치시키는 역할을 합니다.
 
 > 참고:<br />
-사람들은 종종 element와 더 넓은 의미로 쓰이는 "component"를 헷갈려 합니다. [다음 섹션]([quick-start]-components-and-props.md)에서는 comopnent를 소개하겠습니다. component는 element들이 모여서 만들어집니다. 앞으로 건너뛰기 전에, 이 섹션을 계속 읽어주십시요.
+사람들은 종종 element와 더 넓은 의미로 쓰이는 "component"를 헷갈려 합니다. [다음 섹션]([quick-start]-components-and-props.md)에서는 component를 소개합니다. component는 element들이 모여서 만들어집니다. 앞으로 건너뛰기 전에, 이 섹션을 계속 읽어주세요.
 
 ---
 
