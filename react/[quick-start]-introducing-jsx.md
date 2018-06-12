@@ -10,15 +10,15 @@ const element = <h1>Hello, world!</h1>
 
 이것은 JSX라는 자바스크립트 문법의 확장(extension)으로 UI가 어떻게 보여질지 기술하기 위해서 React와 함께 사용하게 됩니다. JSX는 템플릿 언어를 떠올리게 하지만, 자바스크립트의 모든 기능을 제공합니다.
 
-JSX는 React "element"를 생성합니다. 우리는 [다음 섹션]([quick-start]-rendering-elements.md)에서 DOM에 이 element들을 렌더링하는 과정을 살펴볼 것입니다. 자, 이제 JSX를 시작하는 데 필요한 기본적인 것들을 살펴봅시다.
+JSX는 React "엘리먼트"를 생성합니다. 우리는 [다음 섹션]([quick-start]-rendering-elements.md)에서 DOM에 이 엘리먼트들을 렌더링하는 과정을 살펴볼 것입니다. 자, 이제 JSX를 시작하는 데 필요한 기본적인 것들을 살펴봅시다.
 
 ## 왜 JSX인가?
 
 React는 렌더링 로직이 다른 UI 로직과 본질적으로 결합되어 있다는 사실에 주목합니다. 즉, 이벤트가 어떻게 처리되는지, 시간에 따라 상태가 어떻게 변하는지, 화면에 보여줄 데이터는 어떻게 준비되는지 등의 로직은 렌더링과 밀접하게 연관되어 있습니다.
 
-그래서 React는 마크업과 로직을 별개의 파일로 억지로 분리하는 대신, 둘을 동시에 포함하지만 느슨한 형태로 결합시키는 "component"를 사용해 [관심을 분리(separates concerns)](https://en.wikipedia.org/wiki/Separation_of_concerns)시킵니다. [이후 섹션]([quick-start]-components-and-props.md)에서 component를 주제로 더 자세히 이야기하겠지만, 그 전까지 JavaScript에 마크업을 집어 넣는 것이 아직 어색하다면, 아 [대화](https://www.youtube.com/watch?v=x7cQ3mrcKaY)를 읽어보는 것을 추천합니다.
+그래서 React는 마크업과 로직을 별개의 파일로 억지로 분리하는 대신, 둘을 동시에 포함하지만 느슨한 형태로 결합시키는 "컴포넌트"를 사용해 [관심을 분리(separates concerns)](https://en.wikipedia.org/wiki/Separation_of_concerns)시킵니다. [이후 섹션]([quick-start]-components-and-props.md)에서 컴포넌트를 주제로 더 자세히 이야기하겠지만, 그 전까지 자바스크립트에서 마크업을 집어 넣는 것이 아직 어색하다면, 아 [대화](https://www.youtube.com/watch?v=x7cQ3mrcKaY)를 읽어보는 것을 추천합니다.
 
-React는 JSX가 꼭 [필요한 것은 아닙니다]([advanced-guides]-react-without-jsx.md)만, 많은 사람들이 JavaScript 코드 안에서 UI 작업을 할 때 시각적인 도움을 받는다고 평가합니다. 더불어 에러나 경고 메시지를 보여주는 기능도 유용합니다.
+React는 JSX가 꼭 [필요한 것은 아닙니다]([advanced-guides]-react-without-jsx.md)만, 많은 사람들이 자바스크립트 코드 안에서 UI 작업을 할 때 시각적인 도움을 받는다고 평가합니다. 더불어 에러나 경고 메시지를 보여주는 기능도 유용합니다.
 
 그럼, 시작해봅시다!
 
@@ -38,7 +38,7 @@ ReactDOM.render(
 
 유효한 [JavaScript 표현식](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Expressions)이라면 JSX 구문의 중괄호 안에는 무엇이든 들어갈 수 있습니다. 예를 들어, `2 + 2`, `user.firstName`, `formatName(user)` 모두가 유효한 JavaScript 표현식입니다.
 
-다음 예제는, JavaScript 함수인 `formatName(user)`의 결과를 `<h1>` element에 삽입할 것입니다.
+다음 예제는, JavaScript 함수인 `formatName(user)`의 결과를 `<h1>` 엘리먼트에 삽입할 것입니다.
 
 ```jsx
 function formatName(user) {
@@ -68,7 +68,7 @@ ReactDOM.render(
 
 ## JSX 역시 표현식이다
 
-컴파일이 끝나면, JSX 표현식은 일반적인 JavaScript 함수 호출이 되고, JavaScript의 object로 평가됩니다.
+컴파일이 끝나면, JSX 표현식은 일반적인 자바스크립트 함수 호출이 되고, 자바스크립트의 오브젝트로 평가됩니다.
 
 이것은 JSX를 `if`문이나 `for`문 안에 넣거나, 변수에 저장하고, 함수 인자로 사용하며, 함수의 리턴값으로 이용 할 수 있다는 것을 의미합니다.
 
@@ -95,10 +95,10 @@ const element = <div tabIndex="0"></div>
 const element = <img src={user.avatarUrl}></img>
 ```
 
-JavaScript 표현식을 속성으로 추가할 때 중괄호 주위에 따옴표를 쓰지 마세요. 문자열을 위해 따옴표를 쓰는 경우와 표현식을 위해 중괄호를 이용하는 경우가 있으며 하나의 속성에 두 가지가 같이 쓰일 수는 없습니다.
+자바스크립트 표현식을 속성으로 추가할 때 중괄호 주위에 따옴표를 쓰지 마세요. 문자열을 위해 따옴표를 쓰는 경우와 표현식을 위해 중괄호를 이용하는 경우가 있으며 하나의 속성에 두 가지가 같이 쓰일 수는 없습니다.
 
 > 주의:<br />
-JSX는 HTML보다 JavaScript에 더 가깝기 때문에, React DOM은 명명 규칙(naming convention)으로 HTML 속성 이름 대신 `camelCase` 속성을 이용합니다.<p />
+JSX는 HTML보다 자바스크립트에 더 가깝기 때문에, React DOM은 명명 규칙(naming convention)으로 HTML 속성 이름 대신 `camelCase` 속성을 이용합니다.<p />
 예를 들어, `class`는 JSX에서 [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className)이 되고, `tabindex`는 [tabIndex](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/tabIndex)가 됩니다.
 
 ## JSX에서 자식 정의하기
@@ -154,7 +154,7 @@ const element = React.createElement(
 )
 ```
 
-`React.createElement()`는 버그를 방지하기 위해 몇 가지 체크를 하는 것을 제외하면, 기본적으로 다음과 같이 object를 만듭니다:
+`React.createElement()`는 버그를 방지하기 위해 몇 가지 체크를 하는 것을 제외하면, 기본적으로 다음과 같이 오브젝트를 만듭니다:
 
 ```javascript
 // 참고: 구조를 단순화시켰음을 주의하세요.
@@ -167,7 +167,7 @@ const element = {
 }
 ```
 
-이 object들은 "React element'로 불리며 화면에 보여질 것들에 대한 상세 기술이라고 생각 할 수 있습니다. React는 이 object들을 읽어 들여서 DOM을 구성하며 항상 업데이트 된 상태를 유지합니다.
+이 오브젝트들은 "React 엘리먼트'로 불리며 화면에 보여질 것들에 대한 상세 기술이라고 생각 할 수 있습니다. React는 이 오브젝트들을 읽어 들여서 DOM을 구성하며 항상 업데이트 된 상태를 유지합니다.
 
 다음 섹션에서는 React 엘리먼트들을 DOM에 그리는 방법에 대해 알아보겠습니다.
 
