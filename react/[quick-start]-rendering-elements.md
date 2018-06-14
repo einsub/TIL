@@ -40,7 +40,7 @@ ReactDOM.render(element, document.getElementById('root'))
 
 ---
 
-## 렌더링 된 엘리먼트를 업데이트하기
+## <a name="updating-the-rendered-element"></a>렌더링 된 엘리먼트를 업데이트하기
 
 React 엘리먼트는 [불변(immutable)](https://en.wikipedia.org/wiki/Immutable_object)합니다. 한번 엘리먼트를 만들면, 그 자식이나 속성을 변경 할 수 없습니다. 엘리먼트가 어느 특정한 순간에 UI에 보여지는 것은 마치 한 장의 영화 프레임과도 비슷합니다.
 
