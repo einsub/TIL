@@ -1,0 +1,45 @@
+{
+    "extends": "tslint-config-airbnb",
+    "rules": {
+        "max-line-length": {
+            "options": [120]
+        },
+        "new-parens": true,
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-conditional-assignment": true,
+        "no-consecutive-blank-lines": true,
+        "trailing-comma": [
+          true,
+          {
+            "multiline": "never",
+            "singleline": "never"
+          }
+        ],
+        "semicolon": [
+          true,
+          "never"
+        ],
+        "no-console": {
+            "severity": "warning",
+            "options": [
+                "debug",
+                "info",
+                "log",
+                "time",
+                "timeEnd",
+                "trace"
+            ]
+        },
+        "align": [
+          true,
+          "parameters",
+          "statements"
+        ]
+    },
+    "jsRules": {
+        "max-line-length": {
+            "options": [120]
+        }
+    }
+}
